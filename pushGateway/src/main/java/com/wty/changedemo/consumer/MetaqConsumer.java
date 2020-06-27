@@ -31,7 +31,7 @@ public class MetaqConsumer implements InitializingBean {
                     }
                     System.out.println("开始投递任务：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                     Object send = execute.businessHandler(producerDTO);
-                    System.out.println("投递任务结束：" + send + " " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                    System.out.println("投递任务结束：" + send + "\r\n " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                     try {
                         Thread.sleep(ThreadLocalRandom.current().nextInt(100));
                     } catch (InterruptedException e) {
