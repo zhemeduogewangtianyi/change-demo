@@ -1,37 +1,37 @@
-package com.wty.changedemo.service;
+package com.wty.changedemo.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.wty.changedemo.adaptor.AbstractHandlerInterceptorAdaptor;
 import com.wty.changedemo.entity.producer.ProducerDTO;
-import com.wty.changedemo.queue.RedisQueue;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wty.changedemo.service.BusinessHandler;
 import org.springframework.stereotype.Component;
 
-@Component
-public class OdpsProducerInterceptor extends AbstractHandlerInterceptorAdaptor<ProducerDTO> {
+import java.util.List;
 
-    @Autowired
-    private RedisQueue queue;
+@Component
+public class DeliveryProcessInterceptor extends AbstractHandlerInterceptorAdaptor<ProducerDTO> {
 
     @Override
     public Object pre(BusinessHandler<ProducerDTO> handle , ProducerDTO producerDTO){
         //TODO
         if(producerDTO == null){
-            return "上下文不能为空 ！";
+            return false;
         }
+        //TODO hook
         return null;
+
+
 
     }
 
     @Override
-    public void post(BusinessHandler<ProducerDTO> handle , ProducerDTO taskId , Object result) {
-        if(!(result instanceof ProducerDTO)){
+    public void post(BusinessHandler<ProducerDTO> handle , ProducerDTO producerDTO , Object result) {
+        if(!(result instanceof List)){
             return;
         }
-        ProducerDTO producerDTO = (ProducerDTO) result;
-        producerDTO.setFlag(1);
-        if(producerDTO.getExpireAt() > System.currentTimeMillis()){
-            queue.lpush(producerDTO);
-        }
+        List download = (List) result;
+        producerDTO.setFlag(3);
+        System.err.println("投递：" + JSON.toJSONString(download));
     }
 
     @Override
@@ -46,11 +46,12 @@ public class OdpsProducerInterceptor extends AbstractHandlerInterceptorAdaptor<P
 
     @Override
     public boolean support(ProducerDTO producerDTO) {
-        return producerDTO.getFlag() == 0 && producerDTO.getExpireAt() > System.currentTimeMillis();
+        return producerDTO.getFlag() == 2 && producerDTO.getExpireAt() > System.currentTimeMillis();
     }
 
     @Override
     public boolean available(ProducerDTO producerDTO) {
         return producerDTO.getAvailable() == 0;
     }
+
 }

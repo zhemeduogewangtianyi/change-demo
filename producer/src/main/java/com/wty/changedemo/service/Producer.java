@@ -5,11 +5,12 @@ import com.wty.changedemo.dao.TaskMapper;
 import com.wty.changedemo.entity.TaskDO;
 import com.wty.changedemo.entity.common.CommonParamsDTO;
 import com.wty.changedemo.entity.producer.*;
+import com.wty.changedemo.queue.RedisQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Producer implements BusinessHandler<Long> {
+public class Producer implements BusinessHandler<ProducerDTO> {
 
     @Autowired
     private TaskMapper taskMapper;
@@ -17,18 +18,18 @@ public class Producer implements BusinessHandler<Long> {
     @Autowired
     private DataSourceMapper dataSourceMapper;
 
-    public Object handle(Long taskId){
+    @Autowired
+    private RedisQueue queue;
 
-        TaskDO task = taskMapper.getTask(taskId);
+    public Object handle(ProducerDTO producerDTO){
+
+        TaskDO task = taskMapper.getTask(producerDTO.getTaskId());
         DataSourceDO dataSourceById = dataSourceMapper.getDataSourceById(task.getDataSourceId());
         String project = dataSourceById.getProject();
         String table = dataSourceById.getTable();
 
-        ProducerDTO producerDTO = new ProducerDTO();
-
         producerDTO.setContextId("1a-2b-3c");
         producerDTO.setCreateAt(System.currentTimeMillis());
-        producerDTO.setExpireAt(System.currentTimeMillis() + 1000 * 60 * 60 * 10);
         producerDTO.setPriority(5);
 
         ReaderDTO reader = new ReaderDTO();
@@ -88,12 +89,12 @@ public class Producer implements BusinessHandler<Long> {
     }
 
     @Override
-    public boolean support(Long aLong) {
-        TaskDO task = taskMapper.getTask(aLong);
-        if(task == null || task.getType() == null){
+    public boolean support(ProducerDTO producerDTO) {
+        if(producerDTO == null){
             return false;
         }
-        return task.getType() - 1 == 0;
+        boolean b = producerDTO.getFlag() == 0 && producerDTO.getExpireAt() > System.currentTimeMillis();
+        return b;
 
     }
 
@@ -103,7 +104,7 @@ public class Producer implements BusinessHandler<Long> {
     }
 
     @Override
-    public boolean available(Long aLong) {
-        return true;
+    public boolean available(ProducerDTO producerDTO) {
+        return producerDTO.getAvailable() == 0;
     }
 }

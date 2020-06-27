@@ -8,6 +8,15 @@ public class ProducerDTO {
     /** 上下文ID */
     private String contextId;
 
+    /** 任务ID */
+    private Long taskId;
+
+    /** 0：生产json 1:拉取处理数据 2：投递数据 3 投递中 4 投递失败 5 结束 */
+    private Integer flag;
+
+    /** 开关 0 开启 1 关闭 */
+    private Integer available = 0;
+
     /** 创建时间 */
     private Long createAt;
 

@@ -1,8 +1,8 @@
 package com.wty.changedemo.handler;
 
 import com.wty.changedemo.lock.LockResource;
-import com.wty.changedemo.service.HandlerInterceptor;
 import com.wty.changedemo.service.BusinessHandler;
+import com.wty.changedemo.service.HandlerInterceptor;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -63,7 +63,17 @@ public abstract class AbstractHandler<T> {
 
 
     private boolean condition(HandlerInterceptor<T> interceptor , BusinessHandler<T> businessHandler , T t){
-        return interceptor.support(t) && interceptor.available(t) && businessHandler.support(t) && businessHandler.available(t);
+
+        if(!interceptor.support(t)){
+            return false;
+        }
+        if(!interceptor.available(t)){
+            return false;
+        }
+        if(!businessHandler.support(t)){
+            return false;
+        }
+        return businessHandler.available(t);
     }
 
 

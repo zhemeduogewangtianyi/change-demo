@@ -29,7 +29,7 @@ public class LoggingHandlerInterceptor<T> extends AbstractHandlerInterceptorAdap
         if(e != null){
             if(!threadLocal.get().isEmpty()){
                 threadLocal.get().clear();
-                logInfo.logError(e,"{} 执行出错 {}",handle.getClass().getSimpleName());
+                logInfo.logError(e,"{} 执行出错 {}",handle.getClass().getSimpleName(),e.getMessage());
             }
         }
     }
@@ -39,4 +39,8 @@ public class LoggingHandlerInterceptor<T> extends AbstractHandlerInterceptorAdap
         return Integer.MIN_VALUE - 1;
     }
 
+    @Override
+    public boolean support(T t) {
+        return false;
+    }
 }

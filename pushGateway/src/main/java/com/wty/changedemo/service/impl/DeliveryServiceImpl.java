@@ -1,10 +1,10 @@
-package com.wty.changedemo.service;
+package com.wty.changedemo.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.wty.changedemo.entity.common.CommonParamsDTO;
 import com.wty.changedemo.entity.producer.ProducerDTO;
 import com.wty.changedemo.entity.producer.PushGatewayDTO;
 import com.wty.changedemo.manager.OssManager;
+import com.wty.changedemo.service.BusinessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class DeliveryServiceImpl implements DeliveryService {
+public class DeliveryServiceImpl implements BusinessHandler<ProducerDTO> {
 
     @Autowired
     private OssManager ossManager;
 
     @Override
-    public boolean send(ProducerDTO producerDTO) {
+    public Object handle(ProducerDTO producerDTO) {
         try {
             PushGatewayDTO pushGatewayDTO = producerDTO.getPushGatewayDTO();
             String type = pushGatewayDTO.getType();
@@ -32,10 +32,26 @@ public class DeliveryServiceImpl implements DeliveryService {
             List<Map<String, Object>> download = ossManager.download(ossPath);
             //投递。。。
             Thread.sleep(5000L);
-            System.err.println("投递：" + JSON.toJSONString(download));
+            return download;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return true;
+        return null;
+    }
+
+    @Override
+    public boolean support(ProducerDTO producerDTO) {
+        return producerDTO.getFlag() == 2 && producerDTO.getExpireAt() > System.currentTimeMillis();
+
+    }
+
+    @Override
+    public int getOrder() {
+        return Integer.MAX_VALUE - 3;
+    }
+
+    @Override
+    public boolean available(ProducerDTO producerDTO) {
+        return producerDTO.getAvailable() == 0;
     }
 }

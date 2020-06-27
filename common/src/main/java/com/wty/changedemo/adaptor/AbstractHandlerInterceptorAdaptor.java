@@ -17,7 +17,7 @@ public abstract class AbstractHandlerInterceptorAdaptor<T> implements HandlerInt
 
     @Override
     public Object pre(BusinessHandler<T> handler, T t) {
-        return new Object();
+        return null;
     }
 
     @Override
@@ -37,6 +37,6 @@ public abstract class AbstractHandlerInterceptorAdaptor<T> implements HandlerInt
 
     @Override
     public boolean support(T t) {
-        return true;
+        return false;
     }
 }
