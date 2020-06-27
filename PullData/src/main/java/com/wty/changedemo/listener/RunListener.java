@@ -34,19 +34,20 @@ public class RunListener implements InitializingBean {
         Task task = new Task("key", new TaskCallback<ProducerDTO>() {
             @Override
             public void callback(ProducerDTO o) {
-                ProducerDTO rpop = (ProducerDTO)redisQueue.rpop();
-                if(rpop != null){
-                    List<Map<String, Object>> maps = odpsService.pullOdps(rpop);
+                ProducerDTO producerDTO = (ProducerDTO)redisQueue.rpop();
+                if(producerDTO != null && producerDTO.getExpireAt() > System.currentTimeMillis()){
+
+                    List<Map<String, Object>> maps = odpsService.pullOdps(producerDTO);
                     //ETL
                     //VM
-                    String upload = ossManager.upload(rpop, maps);
+                    String upload = ossManager.upload(producerDTO, maps);
                     //发送mq
-                    PushGatewayDTO pushGatewayDTO = rpop.getPushGatewayDTO();
+                    PushGatewayDTO pushGatewayDTO = producerDTO.getPushGatewayDTO();
                     CommonParamsDTO params = pushGatewayDTO.getParams();
                     params.setOssPath(upload);
                     pushGatewayDTO.setParams(params);
-                    rpop.setPushGatewayDTO(pushGatewayDTO);
-                    metaQueue.send(rpop);
+                    producerDTO.setPushGatewayDTO(pushGatewayDTO);
+                    metaQueue.send(producerDTO);
                     System.out.println(Thread.currentThread().getName() + " 回调执行完毕！");
                 }
             }

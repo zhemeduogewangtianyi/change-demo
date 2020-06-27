@@ -28,8 +28,9 @@ public class OdpsProducerInterceptor extends AbstractHandlerInterceptorAdaptor<L
             return;
         }
         ProducerDTO producerDTO = (ProducerDTO) result;
-        queue.lpush(producerDTO);
-        System.out.println("a");
+        if(producerDTO.getExpireAt() > System.currentTimeMillis()){
+            queue.lpush(producerDTO);
+        }
     }
 
     @Override

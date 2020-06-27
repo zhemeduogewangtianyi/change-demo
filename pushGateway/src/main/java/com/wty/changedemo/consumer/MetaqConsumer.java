@@ -23,11 +23,11 @@ public class MetaqConsumer implements InitializingBean {
             @Override
             public void run() {
                 while(true){
-                    ProducerDTO pull = (ProducerDTO)queue.pull();
-                    if(pull == null){
+                    ProducerDTO producerDTO = (ProducerDTO)queue.pull();
+                    if(producerDTO == null || producerDTO.getExpireAt() < System.currentTimeMillis()){
                         continue;
                     }
-                    boolean send = deliveryService.send(pull);
+                    boolean send = deliveryService.send(producerDTO);
                     System.out.println("投递任务：" + send);
                     try {
                         Thread.sleep(ThreadLocalRandom.current().nextInt(100));
