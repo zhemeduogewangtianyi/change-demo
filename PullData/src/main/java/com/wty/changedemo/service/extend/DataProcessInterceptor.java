@@ -33,15 +33,15 @@ public class DataProcessInterceptor extends AbstractHandlerInterceptorAdaptor<Pr
 
     @Override
     public void post(BusinessHandler<ProducerDTO> handle , ProducerDTO producerDTO , Object result) {
-        if(!(result instanceof List)){
+        if(!(result instanceof String)){
             return;
         }
-        List maps = (List) result;
-        String upload = ossManager.upload(producerDTO, maps);
+        String data = (String) result;
+        String fileName = ossManager.upload(producerDTO, data);
         //发送mq
         PushGatewayDTO pushGatewayDTO = producerDTO.getPushGatewayDTO();
         CommonParamsDTO params = pushGatewayDTO.getParams();
-        params.setOssPath(upload);
+        params.setOssPath(fileName);
         pushGatewayDTO.setParams(params);
         producerDTO.setPushGatewayDTO(pushGatewayDTO);
         producerDTO.setFlag(2);
@@ -53,6 +53,11 @@ public class DataProcessInterceptor extends AbstractHandlerInterceptorAdaptor<Pr
 
     @Override
     public void after(BusinessHandler<ProducerDTO> handle, ProducerDTO taskId, Throwable e) {
+
+    }
+
+    @Override
+    public void hook(BusinessHandler<ProducerDTO> handler, ProducerDTO t){
 
     }
 

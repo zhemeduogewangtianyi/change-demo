@@ -21,12 +21,17 @@ public abstract class AbstractHandlerInterceptorAdaptor<T> implements HandlerInt
     }
 
     @Override
-    public void post(BusinessHandler<T> hander, T t, Object result) {
+    public void post(BusinessHandler<T> hander, T t, Object result) throws Throwable {
 
     }
 
     @Override
-    public void after(BusinessHandler<T> handler, T t, Throwable e) {
+    public void after(BusinessHandler<T> handler, T t, Throwable e) throws Throwable {
+
+    }
+
+    @Override
+    public void hook(BusinessHandler<T> handler, T t){
 
     }
 

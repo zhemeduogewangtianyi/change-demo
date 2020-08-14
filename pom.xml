@@ -17,7 +17,7 @@
     </parent>
     <groupId>com.wty</groupId>
     <artifactId>change-demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>change-demo</name>
     <description>Demo project for Spring Boot</description>
 
@@ -50,7 +50,19 @@
         <dependency>
             <groupId>com.wty</groupId>
             <artifactId>producer</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.wty</groupId>
+            <artifactId>PullData</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.wty</groupId>
+            <artifactId>pushGateway</artifactId>
+            <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

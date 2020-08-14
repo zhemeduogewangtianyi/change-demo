@@ -1,6 +1,7 @@
 package com.wty.changedemo.extend;
 
 import com.wty.changedemo.adaptor.AbstractHandlerInterceptorAdaptor;
+import com.wty.changedemo.entity.producer.ProducerDTO;
 import com.wty.changedemo.service.BusinessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,11 @@ public class LoggingHandlerInterceptor<T> extends AbstractHandlerInterceptorAdap
                 logInfo.logError(e,"{} 执行出错 {}",handle.getClass().getSimpleName(),e.getMessage());
             }
         }
+    }
+
+    @Override
+    public void hook(BusinessHandler<T> handler, T t){
+
     }
 
     @Override

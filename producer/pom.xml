@@ -5,8 +5,9 @@
     <parent>
         <artifactId>change-demo</artifactId>
         <groupId>com.wty</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
+    <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>producer</artifactId>
@@ -14,8 +15,8 @@
         <dependency>
             <groupId>com.wty</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>0.0.1</version>
+            <!--<scope>compile</scope>-->
         </dependency>
     </dependencies>
 

@@ -25,11 +25,11 @@ public class RunListener implements InitializingBean {
             public void callback(ProducerDTO o) {
                 ProducerDTO producerDTO = (ProducerDTO)redisQueue.rpop();
                 if(producerDTO != null){
-                    System.err.println("111");
                     execute.businessHandler(producerDTO);
                 }
             }
         },new ProducerDTO());
+        //TODO 线程优先级
         QueueExecutor executor = new QueueExecutor("key", 5, task);
 
         register.register("key",executor);

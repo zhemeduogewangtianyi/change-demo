@@ -10,6 +10,8 @@ public interface HandlerInterceptor<T> extends Supported<T>, Available<T>, Order
 
     void after(BusinessHandler<T> handler , T t , Throwable e) throws Throwable;
 
+    void hook(BusinessHandler<T> handler,T t);
+
     @Override
     int getOrder();
 }

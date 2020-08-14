@@ -12,6 +12,4 @@ public class ReaderDTO {
     /** 公共参数 */
     private CommonParamsDTO params;
 
-    private Boolean stepSwitch;
-
 }

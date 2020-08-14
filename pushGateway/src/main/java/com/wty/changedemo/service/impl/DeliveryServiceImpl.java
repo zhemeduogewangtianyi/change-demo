@@ -1,17 +1,17 @@
 package com.wty.changedemo.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import com.wty.changedemo.entity.common.CommonParamsDTO;
 import com.wty.changedemo.entity.producer.ProducerDTO;
 import com.wty.changedemo.entity.producer.PushGatewayDTO;
 import com.wty.changedemo.manager.OssManager;
 import com.wty.changedemo.service.BusinessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-
-@Component
+@Service
 public class DeliveryServiceImpl implements BusinessHandler<ProducerDTO> {
 
     @Autowired
@@ -29,7 +29,7 @@ public class DeliveryServiceImpl implements BusinessHandler<ProducerDTO> {
             String password = params.getPassword();
             String ossPath = params.getOssPath();
 
-            List<Map<String, Object>> download = ossManager.download(ossPath);
+            String download = ossManager.download(ossPath);
             //投递。。。
             Thread.sleep(5000L);
             return download;

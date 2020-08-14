@@ -3,12 +3,16 @@ package com.wty.changedemo.handler;
 import com.wty.changedemo.lock.LockResource;
 import com.wty.changedemo.service.BusinessHandler;
 import com.wty.changedemo.service.HandlerInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractHandler<T> {
+public abstract class AbstractInterceptorHandler<T> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractInterceptorHandler.class);
 
     private volatile int index = -1;
 
@@ -24,7 +28,6 @@ public abstract class AbstractHandler<T> {
             }
 
             this.index = i;
-
             Object pre = interceptor.pre(businessHandler,t);
             //无数据后处理
             if(pre != null){
@@ -41,6 +44,7 @@ public abstract class AbstractHandler<T> {
             if(!condition(interceptor,businessHandler,t)){
                 continue;
             }
+            interceptor.hook(businessHandler,t);
             interceptor.post(businessHandler,t,result);
         }
     }
@@ -56,7 +60,7 @@ public abstract class AbstractHandler<T> {
                 interceptor.after(businessHandler , t , throwable);
             } catch (Throwable e) {
                 //TODO
-                e.printStackTrace();
+                LOGGER.error("");
             }
         }
     }

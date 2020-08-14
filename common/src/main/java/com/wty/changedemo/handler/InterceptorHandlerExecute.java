@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class HandlerExecute<T> extends AbstractHandler<T> {
+public class InterceptorHandlerExecute<T> extends AbstractInterceptorHandler<T> {
 
     @Autowired
     private List<HandlerInterceptor<T>> interceptors;

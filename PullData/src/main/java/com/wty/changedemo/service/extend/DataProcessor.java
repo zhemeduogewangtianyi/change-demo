@@ -1,25 +1,27 @@
 package com.wty.changedemo.service.extend;
 
-import com.wty.changedemo.entity.producer.ProducerDTO;
-import com.wty.changedemo.manager.OssManager;
-import com.wty.changedemo.queue.MetaQueue;
-import com.wty.changedemo.service.BusinessHandler;
-import com.wty.changedemo.service.OdpsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Map;
 
-@Component
+import com.alibaba.fastjson.JSON;
+
+import com.wty.changedemo.dao.EtlMapper;
+import com.wty.changedemo.dao.VmMapper;
+import com.wty.changedemo.entity.producer.ProducerDTO;
+import com.wty.changedemo.service.BusinessHandler;
+import com.wty.changedemo.service.OdpsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class DataProcessor implements BusinessHandler<ProducerDTO> {
 
     @Autowired
     private OdpsService odpsService;
     @Autowired
-    private OssManager ossManager;
+    private EtlMapper etlMapper;
     @Autowired
-    private MetaQueue metaQueue;
+    private VmMapper vmMapper;
 
 
     @Override
@@ -42,8 +44,10 @@ public class DataProcessor implements BusinessHandler<ProducerDTO> {
 
         List<Map<String, Object>> maps = odpsService.pullOdps(producerDTO);
         //ETL
+        String etl = etlMapper.etl(JSON.toJSONString(maps));
         //VM
-        return maps;
+        String s = vmMapper.vmProcess(etl);
+        return s;
     }
 
     @Override

@@ -40,6 +40,11 @@ public class OdpsProducerInterceptor extends AbstractHandlerInterceptorAdaptor<P
     }
 
     @Override
+    public void hook(BusinessHandler<ProducerDTO> handler, ProducerDTO t){
+
+    }
+
+    @Override
     public int getOrder(){
         return Integer.MIN_VALUE - 1;
     }

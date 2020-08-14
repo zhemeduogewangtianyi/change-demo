@@ -1,12 +1,12 @@
 package com.wty.changedemo.extend;
 
-import com.wty.changedemo.handler.AbstractHandler;
+import com.wty.changedemo.handler.AbstractInterceptorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LogInfoExtend extends AbstractHandler<Object> {
+public class LogInfoExtend extends AbstractInterceptorHandler<Object> {
 
     private Logger LOGGER = LoggerFactory.getLogger(LogInfoExtend.class);
 

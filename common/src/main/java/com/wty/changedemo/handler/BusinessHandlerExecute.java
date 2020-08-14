@@ -11,7 +11,7 @@ import java.util.List;
 public class BusinessHandlerExecute {
 
     @Autowired
-    private HandlerExecute<ProducerDTO> execute;
+    private InterceptorHandlerExecute<ProducerDTO> execute;
 
     @Autowired
     private List<BusinessHandler<ProducerDTO>> businessHandlers;

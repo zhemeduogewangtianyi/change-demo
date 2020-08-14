@@ -1,8 +1,13 @@
 package com.wty.changedemo.listener;
 
-import org.springframework.util.CollectionUtils;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-import java.util.concurrent.*;
+import org.springframework.util.CollectionUtils;
 
 /** 注册接受 */
 public class QueueExecutor extends Thread {
@@ -34,7 +39,7 @@ public class QueueExecutor extends Thread {
 
     private Task task;
 
-    public QueueExecutor(String name ,Integer priority, Task task) {
+    QueueExecutor(String name, Integer priority, Task task) {
         super(name);
         this.setPriority(priority);
         this.task = task;
@@ -53,7 +58,7 @@ public class QueueExecutor extends Thread {
     }
 
     /** 结束 */
-    public boolean end(){
+    boolean end(){
         boolean res ;
         try{
             if(executor != null){

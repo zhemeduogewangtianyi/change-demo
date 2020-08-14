@@ -21,6 +21,7 @@ public class Producer implements BusinessHandler<ProducerDTO> {
     @Autowired
     private RedisQueue queue;
 
+    @Override
     public Object handle(ProducerDTO producerDTO){
 
         TaskDO task = taskMapper.getTask(producerDTO.getTaskId());
@@ -53,7 +54,6 @@ public class Producer implements BusinessHandler<ProducerDTO> {
         params.setPartitionDTO(partitionDTO);
 
         reader.setParams(params);
-        reader.setStepSwitch(true);
 
         producerDTO.setReader(reader);
 
@@ -70,7 +70,7 @@ public class Producer implements BusinessHandler<ProducerDTO> {
         CommonParamsDTO commonParamsDTO = new CommonParamsDTO();
         //TODO
         commonParamsDTO.setDataId("write");
-        commonParamsDTO.setDatObject("/202006240000" + task.getId());
+        commonParamsDTO.setDatObject("/202006240000" + "/" + task.getId());
         writeDTO.setParams(commonParamsDTO);
         producerDTO.setWriteDTO(writeDTO);
 

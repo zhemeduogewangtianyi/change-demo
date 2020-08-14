@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 public class OssManager {
 
-    public String upload(ProducerDTO producerDTO,List<Map<String, Object>> maps){
+    public String upload(ProducerDTO producerDTO,String data){
         WriteDTO writeDTO = producerDTO.getWriteDTO();
         String type = writeDTO.getType();
         CommonParamsDTO params = writeDTO.getParams();
@@ -24,12 +24,12 @@ public class OssManager {
         //文件名称....
         //...
 
-        System.err.println("上传 ： params : " + JSON.toJSONString(maps));
+        System.err.println("上传 ： params : " + data);
         //上传
         return "fileName_" + System.currentTimeMillis();
     }
 
-    public List<Map<String,Object>> download(String filePath){
+    public String download(String filePath){
         //TODO oss下载数据
         List<Map<String,Object>> maps = new ArrayList<>();
         for(int i = 0 ; i < 100 ; i++){
@@ -37,7 +37,7 @@ public class OssManager {
             map.put(i+"",i);
             maps.add(map);
         }
-        return maps;
+        return "<a>" + JSON.toJSONString(maps) + "/<a>";
     }
 
 }
